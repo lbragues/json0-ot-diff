@@ -299,5 +299,75 @@ describe("Jsondiff", function() {
         });
       });
     });
+    describe("Object Property Mutation", function() {
+      let tests = [
+        {
+          name: "Append two nodes inside object property",
+          start: {
+            "nodes" : [
+              {
+                "content" : "string"
+              },
+            ],
+          },
+          end: {
+            "nodes" : [
+              {
+                "content" : "s"
+              },
+              {
+                "nodes" : [
+                  {
+                    "content" : "trin"
+                  }
+                ],
+              },
+              {
+                "content" : "g"
+              }
+            ],
+          },
+          expectedCommand: [
+            {
+              "od": "string",
+              "oi": "s",
+              "p": [
+                "nodes",
+                0,
+                "content",
+              ]
+            },
+            {
+              "li": {
+                "nodes": [
+                  {
+                    "content": "trin"
+                  }
+                ]
+              },
+              "p": [
+                "nodes",
+                1
+              ]
+            },
+            {
+              "li": {
+                "content": "g"
+              },
+              "p": [
+                "nodes",
+                2
+              ]
+            }
+          ]
+        },
+      ];
+      tests.forEach(test => {
+        it(test.name, function() {
+          let output = jsondiff(test.start, test.end);
+          expect(output).to.deep.have.same.members(test.expectedCommand);
+        });
+      });
+    });
   });
 });
