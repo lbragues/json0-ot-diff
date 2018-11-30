@@ -128,16 +128,11 @@ var diff = function(input, output, path=[], diffMatchPatch) {
 		var ops = [];
 		var offset = 0;
 		for (var i=0; i < l; ++i) {
-			var index = i;
-			if (input.length >= output.length) {
-				index += offset;
-			}
-			var newOps = diff(input[i], output[i], [...path, index], diffMatchPatch);
+			var newOps = diff(input[i], output[i], [...path, i + offset], diffMatchPatch);
 			newOps.forEach(function(op) {
 				var opParentPath = op.p.slice(0, -1);
 				if (equal(path, opParentPath)) {
-					if ("li" in op) offset++;
-					if ("ld" in op) offset--;
+					if ('ld' in op && !('li' in op)) offset--;
 				}
 				ops.push(op);
 			});
