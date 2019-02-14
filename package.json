@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node tests.js",
     "mocha": "mocha",
-    "mocha-watch": "mocha --watch"
+    "mocha-watch": "mocha --watch",
+    "build": "babel src/index.js --out-file index.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,9 @@
     "ot-json0": "^1.0.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
     "chai": "^4.1.2",
     "diff-match-patch": "^1.0.0",
     "mocha": "^4.0.1"
