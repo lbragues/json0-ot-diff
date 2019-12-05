@@ -89,17 +89,13 @@ var optimize = function optimize(ops) {
     } // The first operatin must be an insertion and the second a deletion.
 
 
-    if (!a.li || !b.ld) {
-      continue;
-    } // The object we insert must be equal to what we delete next.
-
-
-    if (!equal(a.li, b.ld)) {
-      continue;
+    if (a.li && b.ld && equal(a.li, b.ld)) {
+      delete a.li;
+      delete b.ld; // The first operatin must be a deletion and the second an insertion.
+    } else if (b.li && a.ld && equal(b.li, a.ld)) {
+      delete b.li;
+      delete a.ld;
     }
-
-    delete a.li;
-    delete b.ld;
   }
 
   ops = ops.filter(function (op) {
