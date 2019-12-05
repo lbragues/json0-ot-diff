@@ -45,7 +45,6 @@ var optimize = function(ops) {
 	 */
 	for (var i=0, l=ops.length-1; i < l; ++i) {
 		var a = ops[i], b = ops[i+1];
-
 		// The ops must have same path.
 		if (!equal(a.p.slice(0, -1), b.p.slice(0, -1))) {
 			continue;
@@ -56,18 +55,15 @@ var optimize = function(ops) {
 			continue;
 		}
 
-		// The first operatin must be an insertion and the second a deletion.
-		if (!a.li || !b.ld) {
-			continue;
-		}
-
-		// The object we insert must be equal to what we delete next.
-		if (!equal(a.li, b.ld)) {
-			continue;
-		}
-
-		delete a.li;
-		delete b.ld;
+    // The first operatin must be an insertion and the second a deletion.
+    if (a.li && b.ld && equal(a.li, b.ld)) {
+      delete a.li;
+      delete b.ld;
+      // The first operatin must be a deletion and the second an insertion.
+    } else if (b.li && a.ld && equal(b.li, a.ld)) {
+      delete b.li;
+		  delete a.ld;
+    }
 	}
 
 	ops = ops.filter(function(op) {
